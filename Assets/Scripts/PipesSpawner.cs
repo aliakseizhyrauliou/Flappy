@@ -11,6 +11,8 @@ public class PipesSpawner : MonoBehaviour
     public float minHeight = -1f;
     public float maxHeight = 1f;
 
+    public float changeSppedTime = 10f;
+
     public void OnEnable()
     {
         InvokeRepeating(nameof(Spawn), spawnRate, spawnRate);

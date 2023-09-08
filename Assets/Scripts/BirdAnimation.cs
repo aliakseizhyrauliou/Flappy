@@ -8,8 +8,10 @@ public class BirdAnimation : MonoBehaviour
     private SpriteRenderer _currentWingsSprite;
     public Sprite[] _wingsSprites;
     private int _wingsIndex = 0;
-    public Rigidbody2D _currentRigidbody;
-    private float _rotation = 30f;
+
+    private Vector3 _previousPosition;
+    public float downRotationAngle = -15f; // Угол поворота вниз
+    public float upRotationAngle = 15f;
 
     private void Awake()
     {
@@ -33,23 +35,27 @@ public class BirdAnimation : MonoBehaviour
 
         _currentWingsSprite.sprite = _wingsSprites[_wingsIndex];
     }
-/*
-    void Update()
+
+    private void Update()
     {
+        var currentY = transform.position.y;
 
-        float tiltAngle = 0.0f;
-        if (_currentRigidbody.velocity.y > 0)
+        if (currentY > _previousPosition.y)
         {
-            // Если птица двигается вверх, устанавливаем угол наклона вверх
-            tiltAngle = -_rotation;
+            // Птица движется вверх, поворачиваем вверх
+            RotateBird(upRotationAngle);
         }
-        else if (_currentRigidbody.velocity.y < 0)
+        else if (currentY < _previousPosition.y)
         {
-            // Если птица двигается вниз, устанавливаем угол наклона вниз
-            tiltAngle = _rotation;
+            // Птица движется вниз, поворачиваем вниз
+            RotateBird(downRotationAngle);
         }
+        
+        _previousPosition.y = currentY; 
+    }
 
-        Quaternion targetRotation = Quaternion.Euler(tiltAngle, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10);
-    }*/
+    private void RotateBird(float angle)
+    {
+        transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle);
+    }
 }
